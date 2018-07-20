@@ -16,12 +16,14 @@ class FeedCreate(APIView):
 
     def post(self, request, format=None):
         serializer = FeedSerializer(data=request.data)
-        permission_classes = (permissions.IsAuthenticated,)
+        permission_classes = (permissions.IsAuthenticated, IsOwner)
         #return Response(req_sent_count)
         if serializer.is_valid():
+            serializer.save(owner=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    """
     def perform_create(self, serializer):
-        """Save the post data when creating a new wallpost."""
         serializer.save(owner=self.request.user)
+"""
