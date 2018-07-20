@@ -18,3 +18,10 @@ class Connections(models.Model):
     request_status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
+
+class Feed(models.Model):
+    owner = models.ForeignKey('auth.User', related_name='wallposts', on_delete=models.CASCADE)
+    blog_url = models.CharField(max_length=255, blank=True)
+    context = models.TextField(blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)

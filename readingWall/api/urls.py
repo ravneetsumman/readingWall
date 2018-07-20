@@ -2,6 +2,8 @@ from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from api.account.views import UserCreate
 from api.connections.views import Friends
+from api.feed.views import FeedCreate
+
 #from api import views
 #from api.connections import views
 
@@ -13,4 +15,5 @@ urlpatterns = [
     path('get-token/', obtain_auth_token),
     #path for Connections
     path('connections/', Friends.as_view(), name='connections'),
+    path('feed/', FeedCreate.as_view(), name='feed-create'),
 ]

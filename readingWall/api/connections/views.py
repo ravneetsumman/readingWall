@@ -18,9 +18,14 @@ class Friends(APIView):
 
     def post(self, request, format=None):
         serializer = ConnectionsSerializer(data=request.data)
-        #check if its 
+        #check if request is sent by same id ealrier in database
+        req_sent_count = Connections.objects.filter(friendreq_by = request.data['friendreq_by'],
+        friendreq_to = request.data['friendreq_to']).count()
         permission_classes = (permissions.IsAuthenticated,)
+        #return Response(req_sent_count)
         if serializer.is_valid():
-            serializer.save(friendreq_by=self.request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            if(req_sent_count == 0):
+                serializer.save(friendreq_by=self.request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
